@@ -3,7 +3,7 @@ Fullstack  Project
 
 An ARP sweep 
 
-With This Python Script We Can Easily Find Open Ports 
+With this Python script we can easily sweep and find open ports. 
 
 Features
 * Easy To Use
