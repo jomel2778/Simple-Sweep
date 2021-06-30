@@ -1,0 +1,160 @@
+#!/usr/bin/env python3
+
+'''Open to inter IP(s) as a command line argument. 
+ARP scan is automatically performed on IP(s) entered and then automatically try to 
+ping the IP(s) found during the ARP scan. 
+If no IP is provided will automatically perform an ARP scan on the network asking 
+users for ports to be scanned then prompt users if they would also like to perform a 
+ping on the IPs found during ARP scan.'''
+import os
+import sys; import time; from io import StringIO; import re; import argparse
+#Function to extract only the IP address from the 'arp -a' command
+def extractIPs(fileContent):
+    pattern = r"((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)([ (\[]?(\.|dot)[ )\]]?(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3})"
+    ips = [each[0] for each in re.findall(pattern, fileContent)]   
+    for item in ips:
+        location = ips.index(item)
+        ip = re.sub("[ ()\[\]]", "", item)
+        ip = re.sub("dot", ".", ip)
+        ips.remove(item)
+        ips.insert(location, ip) 
+    return ips
+#Function to automatically socket scan IP addresses provided to it and print any open ports
+def portscannerauto(target):
+    import sys
+    import socket
+    from datetime import datetime
+    # Add Banner 
+    print("-" * 50)
+    print("Scanning Target: " + target)
+    print("Scanning started at:" + str(datetime.now()))
+    print("-" * 50)
+
+    try:
+        
+        # will scan ports user defines
+        for port in range(1,450):
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            socket.setdefaulttimeout(1)
+            
+            # returns an error indicator
+            result = s.connect_ex((target,port))
+            if result ==0:
+                print("Port {} is open".format(port))
+            s.close()
+        print('End of open ports')
+            
+    except KeyboardInterrupt:
+            print("\n Exitting Program !!!!")
+            sys.exit()
+    except socket.gaierror:
+            print("\n Hostname Could Not Be Resolved !!!!")
+            sys.exit()
+    except socket.error:
+            print("\ Server not responding !!!!")
+            sys.exit()
+#Funtion to scan ports a user provides and print any open ports
+def portscanner(target):
+    import sys
+    import socket
+    from datetime import datetime
+    # Add Banner 
+    print("-" * 50)
+    print("Scanning Target: " + target)
+    print("Scanning started at:" + str(datetime.now()))
+    print("-" * 50)
+    lowerport= int(input("what port would you like to start scanning at?:"))
+    upperport= int(input('what port would you like to finish scanning at?:'))
+    try:
+        
+        # will scan ports user defines
+        for port in range(lowerport,upperport):
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            socket.setdefaulttimeout(1)
+            
+            # returns an error indicator
+            result = s.connect_ex((target,port))
+            if result ==0:
+                print("Port {} is open".format(port))
+            s.close()
+        print('End of open ports')
+            
+    except KeyboardInterrupt:
+            print("\n Exitting Program !!!!")
+            sys.exit()
+    except socket.gaierror:
+            print("\n Hostname Could Not Be Resolved !!!!")
+            sys.exit()
+    except socket.error:
+            print("\ Server not responding !!!!")
+            sys.exit()
+###############################################################################
+print('Welcome to SimpleSweep')
+print('''' 
+╔═══╗──────╔╗────╔═══╗──────────────╔═══╗
+║╔═╗║──────║║────║╔═╗║──────────────║╔═╗║
+║╚══╦╦╗╔╦══╣║╔══╗║╚══╦╗╔╗╔╦══╦══╦══╗║╚═╝╠═╦══╗
+╚══╗╠╣╚╝║╔╗║║║║═╣╚══╗║╚╝╚╝║║═╣║═╣╔╗║║╔══╣╔╣╔╗║
+║╚═╝║║║║║╚╝║╚╣║═╣║╚═╝╠╗╔╗╔╣║═╣║═╣╚╝║║║──║║║╚╝║
+╚═══╩╩╩╩╣╔═╩═╩══╝╚═══╝╚╝╚╝╚══╩══╣╔═╝╚╝──╚╝╚══╝
+────────║║──────────────────────║║
+────────╚╝──────────────────────╚╝ 
+            .-.
+            | |
+            |=|
+            |=|
+            | |
+            | |
+            | |
+            | |
+            |=|
+            |=|
+            |_|
+          .=/I\=.
+         ////V\\\\
+         |#######|
+         |||||||||
+         |||||||||
+         |||||||||''')
+
+#Try block is entered if any command line arguments are entered 
+try:
+    if len(sys.argv[1]) < 1:
+        sys.exit()
+    customIP = sys.argv[1:] 
+    #port scanner credit: (author unknown)
+    #https://www.geeksforgeeks.org/simple-port-scanner-using-sockets-in-python/
+    #Pass every IP entered into automatic port scanner function
+    for IP in customIP:
+        portscannerauto(IP)
+    #Pass every IP entered into NMAP port scanner
+    for IP in customIP:
+        print('\n scanning ' + IP + ' for ping response:')
+        os.system('nmap -PR' +IP)
+    print('thank you for using simpleSweep')
+
+
+#Except block entered if no command line arguments provided
+except:
+    #print('expect block entered')
+    scanresult = os.popen('arp -a').read()
+    listofIPs= extractIPs(scanresult)
+    print('IPs found: ')
+    print(listofIPs)
+    counter=0
+    lenIPlist= len(listofIPs)
+    for IP in listofIPs:
+        portscanner(IP)
+        counter = counter +1
+        if counter == lenIPlist:
+            print("All found hosts scanned.")
+
+    usenmap = input('Would you like to continute scanning hosts found during ARPscan with NMAP to check for ping response? Y/N?: ')
+    if usenmap == 'Y':
+            for IP in listofIPs:
+                print('\n scanning ' + IP +' for ping response:')
+                os.system('nmap -PR' +IP)
+
+    else:
+        print('Thank you for using SimpleSweep!')
+          
