@@ -13,3 +13,5 @@ Features:
 * Easy To Use
 
 * Easy To Maintain
+
+Put together by Clayton Kennedy/Cynthia Knowles/Joleen Melanovich
