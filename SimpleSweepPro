@@ -129,8 +129,12 @@ try:
         portscannerauto(IP)
     #Pass every IP entered into NMAP port scanner
     for IP in customIP:
-        print('\n scanning ' + IP + ' for ping response:')
-        os.system('ping -c 1 ' +IP)
+        #print('\n scanning ' + IP + ' for ping response:')
+        pingresult = os.popen('ping -c 1 ' +IP).read()
+        if "100.0%" in pingresult:
+            print(IP +" DID NOT respond to a ping")
+        else:
+            print(IP + " DID respond to a ping")
         
     print('thank you for using simpleSweep')
 
@@ -150,13 +154,16 @@ except:
         if counter == lenIPlist:
             print("All found hosts scanned.")
 
-    usenmap = input('Would you like to continue scanning hosts found during ARP scan check for ping response? Y/N?: ')
+    usenmap = input('Would you like to continue scanning hosts found during ARP scan to check for ping response? Y/N?: ')
     if usenmap == 'Y':
             for IP in listofIPs:
-                print('\n scanning ' + IP +' for ping response:')
-                os.system('ping -c 1 ' +IP)
-
+                #print('\n scanning ' + IP +' for ping response:')
+                pingresponce= os.popen('ping -c 1 ' +IP).read()
+                if '100.0%' in pingresponce:
+                    print(IP + " DID NOT respond to a ping")
+                else:
+                    print(IP + " DID respond to a ping")
+            print("Thank you for using SimpleSweepPro!")
     else:
-        print('Thank you for using SimpleSweep!')
-          
+        print('Thank you for using SimpleSweepPro!')
           
