@@ -130,7 +130,8 @@ try:
     #Pass every IP entered into NMAP port scanner
     for IP in customIP:
         print('\n scanning ' + IP + ' for ping response:')
-        os.system('nmap -PR' +IP)
+        os.system('ping -c 1 ' +IP)
+        
     print('thank you for using simpleSweep')
 
 
@@ -149,12 +150,13 @@ except:
         if counter == lenIPlist:
             print("All found hosts scanned.")
 
-    usenmap = input('Would you like to continute scanning hosts found during ARPscan with NMAP to check for ping response? Y/N?: ')
+    usenmap = input('Would you like to continue scanning hosts found during ARP scan check for ping response? Y/N?: ')
     if usenmap == 'Y':
             for IP in listofIPs:
                 print('\n scanning ' + IP +' for ping response:')
-                os.system('nmap -PR' +IP)
+                os.system('ping -c 1 ' +IP)
 
     else:
         print('Thank you for using SimpleSweep!')
+          
           
