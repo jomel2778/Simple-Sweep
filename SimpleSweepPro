@@ -40,18 +40,18 @@ def portscannerauto(target):
             # returns an error indicator
             result = s.connect_ex((target,port))
             if result ==0:
-                print("Port {} is open".format(port))
+                print("Port {} Is Open".format(port))
             s.close()
-        print('End of open ports')
+        print('End Of Open Ports')
             
     except KeyboardInterrupt:
-            print("\n Exitting Program !!!!")
+            print("\n Exiting Program !!!!")
             sys.exit()
     except socket.gaierror:
             print("\n Hostname Could Not Be Resolved !!!!")
             sys.exit()
     except socket.error:
-            print("\ Server not responding !!!!")
+            print("\ Server Not Responding !!!!")
             sys.exit()
 #Funtion to scan ports a user provides and print any open ports
 def portscanner(target):
@@ -63,8 +63,8 @@ def portscanner(target):
     print("Scanning Target: " + target)
     print("Scanning started at:" + str(datetime.now()))
     print("-" * 50)
-    lowerport= int(input("what port would you like to start scanning at?:"))
-    upperport= int(input('what port would you like to finish scanning at?:'))
+    lowerport= int(input("What Port Would You Like To Start Scanning At?:"))
+    upperport= int(input('What Port Would You Like To Finish Scanning At?:'))
     try:
         
         # will scan ports that the user defines
@@ -75,9 +75,9 @@ def portscanner(target):
             # returns an error indicator
             result = s.connect_ex((target,port))
             if result ==0:
-                print("Port {} is open".format(port))
+                print("Port {} Is Open".format(port))
             s.close()
-        print('End of open ports')
+        print('End Of Open Ports')
             
     except KeyboardInterrupt:
             print("\n Exitting Program !!!!")
@@ -86,10 +86,10 @@ def portscanner(target):
             print("\n Hostname Could Not Be Resolved !!!!")
             sys.exit()
     except socket.error:
-            print("\ Server not responding !!!!")
+            print("\ Server Not Responding !!!!")
             sys.exit()
 ###############################################################################
-print('Welcome to SimpleSweepPro')
+print('Welcome To SimpleSweepPro')
 print('''
 ╔═══╗──────╔╗────╔═══╗──────────────╔═══╗
 ║╔═╗║──────║║────║╔═╗║──────────────║╔═╗║
@@ -132,11 +132,11 @@ try:
         #print('\n scanning ' + IP + ' for ping response:')
         pingresult = os.popen('ping -c 1 ' +IP).read()
         if "100.0%" in pingresult:
-            print(IP +" DID NOT respond to a ping")
+            print(IP +" DID NOT Respond To Ping")
         else:
-            print(IP + " DID respond to a ping")
+            print(IP + " DID Respond To Ping")
         
-    print('thank you for using SimpleSweepPro')
+    print('Thank You For Using SimpleSweepPro')
 
 
 #Except block entered if no command line arguments provided
@@ -144,7 +144,7 @@ except:
     #print('except block entered')
     scanresult = os.popen('arp -a').read()
     listofIPs= extractIPs(scanresult)
-    print('IPs found: ')
+    print('IPs Found: ')
     print(listofIPs)
     counter=0
     lenIPlist= len(listofIPs)
@@ -152,18 +152,18 @@ except:
         portscanner(IP)
         counter = counter +1
         if counter == lenIPlist:
-            print("All found hosts scanned.")
+            print("All Found Hosts Scanned.")
 
-    usenmap = input('Would you like to continue scanning hosts found during ARP scan and check for a ping response? Y/N?: ')
+    usenmap = input('Would You Like To Continue Scanning The Hosts Found During The ARP Scan And Check For A Ping Response? Y/N?: ')
     if usenmap == 'Y':
             for IP in listofIPs:
                 #print('\n scanning ' + IP +' for ping response:')
                 pingresponce= os.popen('ping -c 1 ' +IP).read()
                 if '100.0%' in pingresponce:
-                    print(IP + " DID NOT respond to a ping")
+                    print(IP + " DID NOT Respond To Ping")
                 else:
-                    print(IP + " DID respond to a ping")
-            print("Thank you for using SimpleSweepPro!")
+                    print(IP + " DID Respond To Ping")
+            print("Thank You For Using SimpleSweepPro!")
     else:
-        print('Thank you for using SimpleSweepPro!')
+        print('Thank You For Using SimpleSweepPro!')
           
