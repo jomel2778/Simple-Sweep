@@ -19,4 +19,4 @@ ping on the IPs found during ARP scan.
 * Easy To Maintain
 
 # Assembled by 
-Clayton Kennedy/Cynthia Knowles/Joleen Melanovich
+Clayton Kennedy / Cynthia Knowles / Joleen Melanovich
