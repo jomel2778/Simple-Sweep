@@ -12,10 +12,11 @@ If no IP is provided it will automatically perform an ARP scan on the network as
 ping on the IPs found during ARP scan.
 
 
-Features:
+# Features:
 
 * Easy To Use
 
 * Easy To Maintain
 
-Assembled by Clayton Kennedy/Cynthia Knowles/Joleen Melanovich
+# Assembled by 
+Clayton Kennedy/Cynthia Knowles/Joleen Melanovich
