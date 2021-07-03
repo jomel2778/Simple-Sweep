@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-'''Open to inter IP(s) as a command line argument. 
-ARP scan is automatically performed on IP(s) entered and then automatically try to 
+'''Open to enter IP(s) as a command line argument. 
+An ARP scan is automatically performed on IP(s) entered and then prompted with the option to try to 
 ping the IP(s) found during the ARP scan. 
-If no IP is provided will automatically perform an ARP scan on the network asking 
-users for ports to be scanned then prompt users if they would also like to perform a 
+If no IP is provided it will automatically perform an ARP scan on the network asking users
+for ports to be scanned then prompt users if they would also like to perform a
 ping on the IPs found during ARP scan.'''
 import os
 import sys; import time; from io import StringIO; import re; import argparse
@@ -67,7 +67,7 @@ def portscanner(target):
     upperport= int(input('what port would you like to finish scanning at?:'))
     try:
         
-        # will scan ports user defines
+        # will scan ports that the user defines
         for port in range(lowerport,upperport):
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             socket.setdefaulttimeout(1)
@@ -89,8 +89,8 @@ def portscanner(target):
             print("\ Server not responding !!!!")
             sys.exit()
 ###############################################################################
-print('Welcome to SimpleSweep')
-print('''' 
+print('Welcome to SimpleSweepPro')
+print('''
 ╔═══╗──────╔╗────╔═══╗──────────────╔═══╗
 ║╔═╗║──────║║────║╔═╗║──────────────║╔═╗║
 ║╚══╦╦╗╔╦══╣║╔══╗║╚══╦╗╔╗╔╦══╦══╦══╗║╚═╝╠═╦══╗
@@ -111,7 +111,7 @@ print(''''
             |=|
             |_|
           .=/I\=.
-         ////V\\\\
+          ////V\\\\
          |#######|
          |||||||||
          |||||||||
@@ -136,12 +136,12 @@ try:
         else:
             print(IP + " DID respond to a ping")
         
-    print('thank you for using simpleSweep')
+    print('thank you for using SimpleSweepPro')
 
 
 #Except block entered if no command line arguments provided
 except:
-    #print('expect block entered')
+    #print('except block entered')
     scanresult = os.popen('arp -a').read()
     listofIPs= extractIPs(scanresult)
     print('IPs found: ')
@@ -154,7 +154,7 @@ except:
         if counter == lenIPlist:
             print("All found hosts scanned.")
 
-    usenmap = input('Would you like to continue scanning hosts found during ARP scan to check for ping response? Y/N?: ')
+    usenmap = input('Would you like to continue scanning hosts found during ARP scan and check for a ping response? Y/N?: ')
     if usenmap == 'Y':
             for IP in listofIPs:
                 #print('\n scanning ' + IP +' for ping response:')
