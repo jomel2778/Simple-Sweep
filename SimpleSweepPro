@@ -33,14 +33,17 @@ def portscannerauto(target):
     try:
         
         # will scan ports user defines
-        for port in range(1,450):
+        for port in range(1,100):
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             socket.setdefaulttimeout(1)
             
             # returns an error indicator
             result = s.connect_ex((target,port))
             if result ==0:
-                print("Port {} Is Open".format(port))
+                banner = os.popen('nmap '+ target + ' -p'+str(port)).read()
+                banner= re.split('\n', banner)
+                print("Port {} Is Open:".format(port) +' ' + banner[5])
+
             s.close()
         print('End Of Open Ports')
             
@@ -75,7 +78,10 @@ def portscanner(target):
             # returns an error indicator
             result = s.connect_ex((target,port))
             if result ==0:
-                print("Port {} Is Open".format(port))
+                banner = os.popen('nmap '+ target + ' -p'+str(port)).read()
+                banner= re.split('\n', banner)
+                print("Port {} Is Open:".format(port) +' ' + banner[5])
+
             s.close()
         print('End Of Open Ports')
             
@@ -119,29 +125,42 @@ print('''
 
 #Try block is entered if any command line arguments are entered 
 try:
-    if len(sys.argv[1]) < 1:
-        sys.exit()
-    customIP = sys.argv[1:] 
+    # if len(sys.argv[1]) < 1:
+    #     sys.exit()
+    # customIP = sys.argv[1:] 
     #port scanner credit: (author unknown)
     #https://www.geeksforgeeks.org/simple-port-scanner-using-sockets-in-python/
     #Pass every IP entered into automatic port scanner function
+    
+    parser = argparse.ArgumentParser(description='Port scanner and Ping sweep checker')
+    parser.add_argument('-v4','--IPV4',type=str, metavar='', help='The IP version 4 Address to be scanned')
+    args = parser.parse_args()
+    
+    customIP=args.IPV4.split(' ')
+    print(customIP)
     for IP in customIP:
         portscannerauto(IP)
-    #Pass every IP entered into NMAP port scanner
-    for IP in customIP:
-        #print('\n scanning ' + IP + ' for ping response:')
         pingresult = os.popen('ping -c 1 ' +IP).read()
         if "100.0%" in pingresult:
             print(IP +" DID NOT Respond To Ping")
         else:
             print(IP + " DID Respond To Ping")
-        
+    #Pass every IP entered into NMAP port scanner
+
+    # print('\n scanning ' + IP + ' for ping response:')
+    # for IP in customIP:
+    #     pingresult = os.popen('ping -c 1 ' +IP).read()
+    #     if "100.0%" in pingresult:
+    #         print(customIP +" DID NOT Respond To Ping")
+    #     else:
+    #         print(customIP + " DID Respond To Ping")
+    
     print('Thank You For Using SimpleSweepPro')
 
 
 #Except block entered if no command line arguments provided
 except:
-    #print('except block entered')
+    # print('except block entered')
     scanresult = os.popen('arp -a').read()
     listofIPs= extractIPs(scanresult)
     print('IPs Found: ')
@@ -166,4 +185,4 @@ except:
             print("Thank You For Using SimpleSweepPro!")
     else:
         print('Thank You For Using SimpleSweepPro!')
-          
+    
