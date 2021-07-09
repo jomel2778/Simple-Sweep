@@ -3,7 +3,7 @@ Fullstack  Project
 
 # Overview
 An ARP sweep and port scan in one. Completed through a series of prompts.
-With this Python script you can easily sweep a network and find open ports.  SimpleSweepPro then takes the results and completes a port scan.  Nice, neat and simple.
+With this Python script you can easily sweep a network and find hosts.  SimpleSweepPro then takes the results and completes a port scan.  Nice, neat and simple.
 
 # Details
 Open to enter IP(s) as a command line argument. 
